@@ -28,7 +28,7 @@ def main():
     try:
         with open('input.txt', 'r') as file:
             for line in file:
-                a, b = line.split("   ")
+                a, b = line.split()
                 arr1.append(int(a))
                 arr2.append(int(b))
     except Exception as e:
