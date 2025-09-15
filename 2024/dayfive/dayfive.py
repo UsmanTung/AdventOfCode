@@ -5,18 +5,33 @@ def checkRules(rules, input):
     for ordering in input:
         present = set(ordering)
         seen = set()
-        sum+= ordering[len(ordering)//2]
         valid = True
         for val in ordering:
             for r in rules[val]:
                 if r in present and r not in seen:
-                    sum-=ordering[len(ordering)//2]
+                    sum+=reorder(ordering, rules)
                     valid = False
                     break
             if not valid:
                 break
             seen.add(val)
     return sum
+
+def reorder(ordering, rules):
+    present = set(ordering)
+    valid = True
+    newOrdering = []
+    while ordering:
+        valid = True
+        for r in rules[ordering[0]]:
+            if valid and r in present and r not in set(newOrdering):
+                ordering.append(ordering.pop(0))
+                valid = False
+                break
+        if valid:
+            newOrdering.append(ordering.pop(0))
+    return newOrdering[len(newOrdering)//2]
+    
 
 
 def main():
