@@ -11,8 +11,13 @@ def recurse(answer, values, i, total):
         return False
     if total == answer and len(values) <= i:
         return True
-    return recurse(answer, values, i+1, total+values[i]) or recurse(answer, values, i+1, total*values[i])
-    
+    concatVal = concatenation(total, values[i])
+    return recurse(answer, values, i+1, total+values[i]) or recurse(answer, values, i+1, total*values[i]) or recurse(answer, values, i+1, concatVal)
+
+def concatenation(val1, val2):
+    val2Str = str(val2)
+    totalStr = str(val1) + val2Str
+    return int(totalStr)
 
 def main():
     with open('input.txt', 'r') as file:
