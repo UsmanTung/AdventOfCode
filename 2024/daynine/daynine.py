@@ -2,6 +2,7 @@ def calculateChecksum(input):
     intInput = [int(c) for c in input]
     outputArr = compactFilesystem(intInput)
     checkSum = 0
+    print(outputArr)
     for i in range(len(outputArr)):
         checkSum += outputArr[i]*i
     return checkSum
@@ -15,10 +16,6 @@ def compactFilesystem(input):
     
     for i in range(len(input)):
         if i > right:
-            temp = input[i]
-            while temp > 0:
-                compact.append(id)
-                temp-=1
             break
         if not free:
             temp = input[i]
@@ -40,6 +37,8 @@ def compactFilesystem(input):
                 else:
                     right -= 2
             free = False
+        elif free and input[i==0]:
+            free=False
     return compact
 
 def main():
