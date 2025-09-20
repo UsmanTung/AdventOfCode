@@ -55,37 +55,43 @@ def compactFilesystem(input):
 
 def compactFilesystem2(input):
     linkedArr = link(input)
-    seen = set()
-    i = len(linkedArr)-1
-    while i >= 0:
-        id, length = linkedArr[i]
-        if id not in seen:
-            for j in range(1, i):
-                if linkedArr[i][0] == ".":
-                    break
-                if linkedArr[j][0] == "." and int(linkedArr[j][1]) >= int(length):
-                    linkedArr.insert(j,(id, length))
-                    if int(linkedArr[j+1][1]) - int(length) > 0:
-                        linkedArr[j+1] = (".", str(int(linkedArr[j+1][1]) - int(length)))
-                        linkedArr[i+1] = (".", length)
-                    else:
-                        del linkedArr[j+1]
-                        linkedArr[i] = (".", length)
-                    break
-            seen.add(id)
-        i-=1
+    ids = sorted({id for id, _ in linkedArr if id != "."},
+                 key=lambda x: int(x), reverse=True)
+    for fid in ids:
+        fi = next(i for i, (idv, _) in enumerate(linkedArr) if idv == fid)
+        length = linkedArr[fi][1]
+        target = None
+        for j in range(0, fi):
+            if linkedArr[j][0] == "." and int(linkedArr[j][1]) >= int(length):
+                target = j
+                break
+        if target is None:
+                continue
+        free_len = linkedArr[target][1]
+        linkedArr.insert(target, (fid, length))
+        rem = free_len - length
+        if rem > 0:
+            linkedArr[target + 1] = (".", rem)
+        else:
+            del linkedArr[target + 1]
+        fi_old = next(k for k in range(target + 1, len(linkedArr))
+                      if linkedArr[k][0] == fid)
+
+        linkedArr[fi_old] = (".", length)
+
     return linkedArr
 
 def link(input):
     result = []
     id = 0
     for i in range(len(input)):
+
         if i % 2 == 0:
-            result.append((str(id), input[i]))
+            result.append((str(id), int(input[i])))
             id += 1
         else:
             if input[i] != "0":
-                result.append((".",input[i]))
+                result.append((".", int(input[i])))
     
     return result
 
@@ -96,6 +102,7 @@ def main():
 
     print(f"calculateChecksum : {calculateChecksum(input)}")
     print(f"calculateChecksum of compact2 : {calculateChecksum2(input)}")
-    # print(calculateChecksum([0,0,9,9,8,1,1,1,8,8,8,2,7,7,7,3,3,3,6,4,4,6,5,5,5,5,6,6]))
+    print(f"calculateChecksum of example compact2 : {calculateChecksum2("2333133121414131402")}")
+    #print(f"link : {link(input)}")
 if __name__ == "__main__":
     main()
