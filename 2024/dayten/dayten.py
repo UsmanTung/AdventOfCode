@@ -6,26 +6,22 @@ def trailSum(input):
             if input[i][j] == "0":
                 zeroCoords.append((i,j))
 
-    def dfs(i, j, seen, nines):
-        if (i,j) in seen:
-            return 
+    def dfs(i, j, nines):
         if input[i][j] == "9":
-            nines.add((i,j))
+            nines.append((i,j))
             return 
-        seen.add((i,j))
         if i-1>=0 and input[i-1][j] == str(int(input[i][j]) + 1):
-            dfs(i-1,j, seen, nines)
+            dfs(i-1,j, nines)
         if j-1>=0 and input[i][j-1] == str(int(input[i][j]) + 1):
-            dfs(i, j-1, seen, nines)  
+            dfs(i, j-1, nines)  
         if i+1 < len(input) and input[i+1][j] == str(int(input[i][j]) + 1):
-            dfs(i+1, j, seen, nines)
+            dfs(i+1, j, nines)
         if j+1 < len(input[0]) and input[i][j+1] == str(int(input[i][j]) + 1):
-            dfs(i, j+1, seen, nines)
+            dfs(i, j+1, nines)
 
     for (i,j) in zeroCoords:
-        temp = set()
-        nines= set()
-        dfs(i, j, temp, nines)
+        nines= []
+        dfs(i, j, nines)
         result += len(nines)
     return result
 
