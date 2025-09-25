@@ -7,11 +7,34 @@ def sumOfAll(input):
             if (i,j) not in seen:
                 area, visited = getIsland(input, i, j, visited)
                 area += 1
-                perimeter = getPerimeter(visited)
+                #perimeter = getPerimeter(visited)
+                temp = set()
+                sides = getSides(visited, temp)
                 for (x, y) in visited:
                     seen.add((x, y))
-                result += area * perimeter
+                result += area * sides
     return result
+
+def getSides(coords):
+    sides = 0
+    for (i, j) in coords:
+        U = (i-1, j) in coords
+        D = (i+1, j) in coords
+        L = (i, j-1) in coords
+        R = (i, j+1) in coords
+
+        if not U and not L: sides += 1
+        if not U and not R: sides += 1
+        if not D and not L: sides += 1
+        if not D and not R: sides += 1
+
+        if U and L and (i-1, j-1) not in coords: sides += 1
+        if U and R and (i-1, j+1) not in coords: sides += 1
+        if D and L and (i+1, j-1) not in coords: sides += 1
+        if D and R and (i+1, j+1) not in coords: sides += 1
+    return sides
+
+
 
 def getPerimeter(visited):
     perimeter = 0
