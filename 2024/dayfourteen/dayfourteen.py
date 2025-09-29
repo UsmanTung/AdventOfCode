@@ -1,9 +1,20 @@
 def simulation(coords, vel, rows, cols):
-    for i in range(len(coords)):
-        coords[i] = calculateXY(coords[i][0], coords[i][1], vel[i][0], vel[i][1], rows, cols)
-    
-    print(coords)
-    return quadrantsProduct(coords, rows, cols)
+    iteration = 1
+    while(True):
+        for i in range(len(coords)):
+            coords[i] = calculateXY(coords[i][0], coords[i][1], vel[i][0], vel[i][1], rows, cols)
+        if findTree(coords):
+            return iteration
+        iteration += 1
+
+    # return quadrantsProduct(coords, rows, cols)
+
+
+def findTree(coords):
+    for (i, j) in coords:
+        if (i-1,j) in coords and (i-2,j) in coords and (i-3,j) in coords and (i-4,j) in coords and (i-5,j) in coords and (i-6,j) in coords and (i-7,j) in coords and (i-8,j) in coords: 
+            return True
+    return False
 
 
 def calculateXY(i, j, si, sj, rows, cols):
@@ -11,14 +22,14 @@ def calculateXY(i, j, si, sj, rows, cols):
     newJ = 0
     if si < 0 :
         displacement = cols - i
-        newI = (((100*si) % cols) - displacement) % cols
+        newI = (((1*si) % cols) - displacement) % cols
     else:
-        newI = (((100*si) % cols) + i) % cols
+        newI = (((1*si) % cols) + i) % cols
     if sj < 0:
         displacement = rows - j
-        newJ = (((100*sj) % rows) - displacement) % rows
+        newJ = (((1*sj) % rows) - displacement) % rows
     else:
-        newJ = (((100*sj) % rows) + j) % rows
+        newJ = (((1*sj) % rows) + j) % rows
     return (newI,newJ)
 
 
@@ -51,7 +62,7 @@ def main():
             coords.append((int(ccc[0]), int(ccc[1])))
             vel.append((int(vvv[0]), int(vvv[1])))
 
-    print(f"quadrants product: {simulation(coords, vel, 103, 101)}")
+    print(f"found tree at iteration: {simulation(coords, vel, 103, 101)}")
 
 
 if __name__ == "__main__":
