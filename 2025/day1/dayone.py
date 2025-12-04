@@ -3,13 +3,15 @@ def sumZeroes(data):
     curr = 50
     for line in data:
         if line[0] == "L":
-            curr -= int(line[1:])
-            curr %= 100
+            total -= (curr - int(line[1:])) // 100
+            if curr == 0:
+                total -= 1
+            curr = (curr - int(line[1:])) % 100
+            if curr == 0:
+                total += 1
         else:
-            curr += int(line[1:])
-            curr %= 100
-        if curr == 0:
-            total += 1
+            total += (curr + int(line[1:])) // 100
+            curr  = (curr + int(line[1:])) % 100
     return total
 
 def main():
